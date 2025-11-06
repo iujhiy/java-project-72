@@ -23,7 +23,7 @@ public class App {
             config.fileRenderer(new JavalinJte());
         });
         app.get("/", ctx -> {
-           ctx.result("Hello World");
+            ctx.result("Hello World");
         });
 
         return app;
