@@ -35,7 +35,8 @@ dependencies {
     implementation("gg.jte:jte:3.2.0")
     implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("com.h2database:h2:2.2.220")
-
+    compileOnly ("org.projectlombok:lombok:1.18.30")
+    annotationProcessor ("org.projectlombok:lombok:1.18.30")
 }
 
 tasks.test {
