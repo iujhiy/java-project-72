@@ -1,7 +1,6 @@
 package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariConfigMXBean;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 
@@ -9,6 +8,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class App {
+    private final static String DEFAULT_DATABASE_URL = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1";
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
         return Integer.parseInt(port);
@@ -21,7 +21,10 @@ public class App {
 
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1");
+        var url = System.getenv("JDBC_DATABASE_URL") == null
+                ? DEFAULT_DATABASE_URL
+                : System.getenv("JDBC_DATABASE_URL");
+        hikariConfig.setJdbcUrl(url);
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte());
