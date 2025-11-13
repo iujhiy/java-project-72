@@ -40,6 +40,7 @@ public class App {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
+
         app.get("/", ctx -> {
             ctx.result("Hello World");
         });
