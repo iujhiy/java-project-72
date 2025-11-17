@@ -28,7 +28,7 @@ public class App {
 
     private static TemplateEngine createTemplateEngine() {
         ClassLoader classLoader = App.class.getClassLoader();
-        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("jte/templates", classLoader);
         return TemplateEngine.create(codeResolver, ContentType.Html);
     }
 

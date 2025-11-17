@@ -1,3 +1,6 @@
+@import gg.jte.Content
+@param Content content
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -10,6 +13,6 @@
     <title>Главная страница</title>
 </head>
 <body>
-
+    ${content}
 </body>
 </html>
