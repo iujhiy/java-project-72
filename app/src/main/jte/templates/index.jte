@@ -1,7 +1,9 @@
 @template.layout.page {
-<form action="/" method="post">
+<form action="/urls" method="post">
     <div class="form-group">
-        <input type="search" name="searchBox" required placeholder="Поиск">
+        <label>
+            <input type="search" name="url" required placeholder="Поиск">
+        </label>
         <input type="submit" name="submitButton" value="Искать">
     </div>
 </form>
