@@ -2,10 +2,9 @@
 <form action="/urls" method="post">
     <div class="form-group">
         <label>
-            <input type="search" name="url" required placeholder="Поиск">
+            <input type="url" name="url" required placeholder="https://example.com">
         </label>
-        <input type="submit" name="submitButton" value="Искать">
+        <button type="submit" name="submitButton">Добавить</button>
     </div>
 </form>
 }
-<!--форму переработать-->
