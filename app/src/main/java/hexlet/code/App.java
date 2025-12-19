@@ -1,9 +1,13 @@
 package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
+import hexlet.code.controller.UrlsController;
+import hexlet.code.repository.BaseRepository;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +31,10 @@ public class App {
         }
     }
 
+    // ищем шаблоны в templates
     private static TemplateEngine createTemplateEngine() {
         ClassLoader classLoader = App.class.getClassLoader();
-        ResourceCodeResolver codeResolver = new ResourceCodeResolver("jte/templates", classLoader);
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
         return TemplateEngine.create(codeResolver, ContentType.Html);
     }
 
@@ -45,20 +50,34 @@ public class App {
 
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
-        var url = System.getenv("JDBC_DATABASE_URL") == null
-                ? DEFAULT_DATABASE_URL
+        var url = System.getenv("JDBC_DATABASE_URL") == null // если не установлена переменная окружения
+                ? DEFAULT_DATABASE_URL // ставим свою на h2 базу
                 : System.getenv("JDBC_DATABASE_URL");
         hikariConfig.setJdbcUrl(url);
-        var sql = readRecourseFile("schema.sql");
+        var dataSource = new HikariDataSource(hikariConfig);
+        var sql = readRecourseFile("schema.sql"); // схема базы данных
         log.info(sql);
+        try (var connection = dataSource.getConnection();
+            var statement = connection.createStatement()) {
+            statement.execute(sql);
+        }
+        BaseRepository.dataSource = dataSource;
+
+
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-        app.get("/", ctx -> {
-            ctx.render("index.jte");
+        app.before(ctx -> {
+            ctx.contentType("text/html; charset=UTF-8");
         });
+
+        app.get("/", ctx -> {
+            ctx.render("create.jte");
+        });
+
+        app.post(NamedRoutes.urlsPath(), UrlsController::create); // может быть null
 
         return app;
     }
