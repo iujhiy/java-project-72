@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class UrlRepository extends BaseRepository {
+
     public static void save(Url url) throws SQLException {
         String sql = "INSERT INTO urls(name, created_at) VALUES(?, ?)";
         try (var conn = dataSource.getConnection();
@@ -21,8 +22,21 @@ public class UrlRepository extends BaseRepository {
             if (generatedKeys.next()) {
                 url.setId(generatedKeys.getInt(1)); // ставим возвращенный ключ базы в объект url
             } else {
-                throw new SQLException("DB haven't returned an id after saving an entity");
+                throw new SQLException("Ошибка добавления в базу данных");
             }
+        }
+    }
+
+    public static boolean isAlreadyExists(Url url) throws SQLException {
+        String sql = "SELECT EXISTS(SELECT 1 FROM urls WHERE name = ?)";
+        try (var conn = dataSource.getConnection();
+            var preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, url.getName());
+            var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getBoolean(1);
+            }
+            return false;
         }
     }
 }
