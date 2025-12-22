@@ -77,7 +77,9 @@ public class App {
             ctx.render("create.jte");
         });
 
-        app.post(NamedRoutes.urlsPath(), UrlsController::create); // может быть null
+        app.post(NamedRoutes.urlsPath(), UrlsController::create);
+        app.get(NamedRoutes.urlsPath(), UrlsController::show)
+
 
         return app;
     }
