@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UrlRepository extends BaseRepository {
 
@@ -27,12 +29,29 @@ public class UrlRepository extends BaseRepository {
         }
     }
 
+    public static List<Url> getEntities() throws SQLException {
+        String sql = "SELECT * FROM urls";
+        try (var conn = dataSource.getConnection();
+            var preparedStatement = conn.prepareStatement(sql);
+            var resultSet = preparedStatement.executeQuery()) {
+            var entities = new ArrayList<Url>();
+            while (resultSet.next()) {
+                var url = new Url();
+                url.setId(resultSet.getInt("id"));
+                url.setName(resultSet.getString("name"));
+                url.setCreatedAt(resultSet.getTimestamp("created_at"));
+                entities.add(url);
+            }
+            return entities;
+        }
+    }
+
     public static boolean isAlreadyExists(Url url) throws SQLException {
         String sql = "SELECT EXISTS(SELECT 1 FROM urls WHERE name = ?)";
         try (var conn = dataSource.getConnection();
-            var preparedStatement = conn.prepareStatement(sql)) {
+            var preparedStatement = conn.prepareStatement(sql);
+            var resultSet = preparedStatement.executeQuery()) {
             preparedStatement.setString(1, url.getName());
-            var resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getBoolean(1);
             }

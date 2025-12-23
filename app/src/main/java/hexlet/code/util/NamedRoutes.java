@@ -12,4 +12,15 @@ public final class NamedRoutes {
         return "/urls";
     }
 
+    public static String urlsTemplate() {
+        return "/urls/index.jte";
+    }
+
+    public static String urlPath(int id) {
+        return urlPath(String.valueOf(id));
+    }
+
+    public static String urlPath(String id) {
+        return "/urls/" + id;
+    }
 }

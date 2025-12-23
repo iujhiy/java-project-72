@@ -78,8 +78,8 @@ public class App {
         });
 
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
-        app.get(NamedRoutes.urlsPath(), UrlsController::show)
-
+        app.get(NamedRoutes.urlsPath(), UrlsController::index);
+        app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
         return app;
     }

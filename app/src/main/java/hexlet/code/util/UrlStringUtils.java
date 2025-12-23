@@ -2,8 +2,8 @@ package hexlet.code.util;
 
 import java.net.URL;
 
-public class URLStringUtils {
-    private URLStringUtils() {
+public class UrlStringUtils {
+    private UrlStringUtils() {
         throw new AssertionError("This is utility class");
     }
 
