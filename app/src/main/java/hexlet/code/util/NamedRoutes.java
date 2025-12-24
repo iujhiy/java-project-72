@@ -1,7 +1,5 @@
 package hexlet.code.util;
 
-import javax.naming.Name;
-
 public final class NamedRoutes {
 
     private NamedRoutes() {
@@ -13,11 +11,11 @@ public final class NamedRoutes {
     }
 
     public static String urlsTemplate() {
-        return "/urls/index.jte";
+        return "urls/index.jte";
     }
 
     public static String urlTemplate() {
-        return "/urls/show.jte";
+        return "urls/show.jte";
     }
 
     public static String urlPath(int id) {

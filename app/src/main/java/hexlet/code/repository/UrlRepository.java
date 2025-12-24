@@ -16,7 +16,7 @@ public class UrlRepository extends BaseRepository {
     public static void save(Url url) throws SQLException {
         String sql = "INSERT INTO urls(name, created_at) VALUES(?, ?)";
         try (var conn = dataSource.getConnection();
-            var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+            var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             var localDateTimeNow = Timestamp.valueOf(LocalDateTime.now());
             url.setCreatedAt(localDateTimeNow);
             preparedStatement.setString(1, url.getName());
@@ -71,11 +71,12 @@ public class UrlRepository extends BaseRepository {
     public static boolean isAlreadyExists(Url url) throws SQLException {
         String sql = "SELECT EXISTS(SELECT 1 FROM urls WHERE name = ?)";
         try (var conn = dataSource.getConnection();
-            var preparedStatement = conn.prepareStatement(sql);
-            var resultSet = preparedStatement.executeQuery()) {
+            var preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, url.getName());
-            if (resultSet.next()) {
-                return resultSet.getBoolean(1);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getBoolean(1);
+                }
             }
             return false;
         }

@@ -14,7 +14,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Optional;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -36,11 +35,9 @@ public class UrlsController {
             } else {
                 ctx.sessionAttribute("flash", "Страница уже существует");
             }
-        }
-        catch (URISyntaxException | MalformedURLException e) {
+        } catch (URISyntaxException | MalformedURLException e) {
             ctx.sessionAttribute("flash", "Некорректный URL");
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             ctx.sessionAttribute("flash", e.getMessage());
         }
         ctx.redirect(NamedRoutes.urlsPath());
@@ -49,6 +46,7 @@ public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         var page = new UrlsPage(urls);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render(NamedRoutes.urlsTemplate(), model("page", page));
     }
 

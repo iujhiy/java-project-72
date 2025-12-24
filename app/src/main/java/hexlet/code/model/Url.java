@@ -15,5 +15,5 @@ public class Url {
         this.name = name;
     }
 
-    public Url() {}
+    public Url() { }
 }

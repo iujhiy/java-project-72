@@ -69,13 +69,9 @@ public class App {
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-        app.before(ctx -> {
-            ctx.contentType("text/html; charset=UTF-8");
-        });
+        app.before(ctx -> ctx.contentType("text/html; charset=UTF-8"));
 
-        app.get("/", ctx -> {
-            ctx.render("create.jte");
-        });
+        app.get("/", ctx -> ctx.render("index.jte"));
 
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
