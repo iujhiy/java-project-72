@@ -1,11 +1,13 @@
 package hexlet.code.controller;
 
+import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.UrlStringUtils;
 import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -50,7 +52,11 @@ public class UrlsController {
         ctx.render(NamedRoutes.urlsTemplate(), model("page", page));
     }
 
-    public static void show(Context ctx) {
-
+    public static void show(Context ctx) throws SQLException {
+        var id = ctx.pathParamAsClass("id", Integer.class).get();
+        var url = UrlRepository.findById(id)
+                .orElseThrow(() -> new NotFoundResponse("Url с id '" + id + "' не найден"));
+        var page = new UrlPage(url);
+        ctx.render(NamedRoutes.urlTemplate(), model("page", page));
     }
 }

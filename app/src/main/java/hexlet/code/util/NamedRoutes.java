@@ -16,6 +16,10 @@ public final class NamedRoutes {
         return "/urls/index.jte";
     }
 
+    public static String urlTemplate() {
+        return "/urls/show.jte";
+    }
+
     public static String urlPath(int id) {
         return urlPath(String.valueOf(id));
     }

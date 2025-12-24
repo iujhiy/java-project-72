@@ -1,4 +1,7 @@
 @import gg.jte.Content
+@import hexlet.code.dto.BasePage
+
+@param BasePage page = null
 @param Content content
 
 <!doctype html>
@@ -18,6 +21,9 @@
     <title>Главная страница</title>
 </head>
 <body>
+    @if (page != null && page.getFlash() != null)
+        <p>${page.getFlash()}</p>
+    @endif
     ${content}
 </body>
 </html>
