@@ -7,8 +7,11 @@ import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
 import hexlet.code.controller.UrlsController;
 import hexlet.code.repository.BaseRepository;
+import hexlet.code.util.ErrorResponse;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
+import io.javalin.http.HttpStatus;
+import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +46,7 @@ public class App {
         return Integer.parseInt(port);
     }
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws IOException, SQLException {
         var app = getApp();
         app.start(getPort());
     }
@@ -77,6 +80,29 @@ public class App {
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
+        handeExceptions(app);
+
         return app;
+    }
+
+    public static void handeExceptions(Javalin app) {
+        app.exception(IllegalArgumentException.class, (e, ctx) -> {
+            ctx.status(HttpStatus.BAD_REQUEST);
+            log.info(e.getMessage());
+            ctx.json(new ErrorResponse("Bad request", e.getMessage()));
+        });
+
+        app.exception(NotFoundResponse.class, (e, ctx) -> {
+            ctx.status(HttpStatus.NOT_FOUND);
+            log.info(e.getMessage());
+            ctx.json(new ErrorResponse("Not found", e.getMessage()));
+        });
+
+        app.exception(Exception.class, (e, ctx) -> {
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.info(e.getMessage());
+            ctx.json(new ErrorResponse("Internal server error", e.getMessage()));
+        });
+
     }
 }
