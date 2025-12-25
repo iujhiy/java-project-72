@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
@@ -24,6 +25,32 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             var response = client.get("/");
             assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    public void testUrlsPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls");
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    public void testUrlPage() {
+        JavalinTest.test(app, (server, client) -> {
+            var url = new Url("https://some-domain.org");
+            UrlRepository.save(url);
+            var response = client.get("/urls/" + url.getId());
+            assertThat(response.code()).isEqualTo(200);
+        });
+    }
+
+    @Test
+    public void testUrlNotFound() {
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.get("/urls/999999");
+            assertThat(response.code()).isEqualTo(404);
         });
     }
 }
