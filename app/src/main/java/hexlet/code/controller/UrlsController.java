@@ -18,7 +18,13 @@ import java.sql.SQLException;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 
-public class UrlsController {
+public final class UrlsController {
+    private UrlsController() {
+        throw new AssertionError("This is utility class");
+    }
+
+    private static final String FLASH_NAME = "flash";
+
     public static void create(Context ctx) throws SQLException {
         var urlString = ctx.formParam("url");
         try {
@@ -31,14 +37,14 @@ public class UrlsController {
             var result = new Url(clearUrl);
             if (!UrlRepository.isAlreadyExists(result)) {
                 UrlRepository.save(result);
-                ctx.sessionAttribute("flash", "Страница успешно добавлена");
+                ctx.sessionAttribute(FLASH_NAME, "Страница успешно добавлена");
             } else {
-                ctx.sessionAttribute("flash", "Страница уже существует");
+                ctx.sessionAttribute(FLASH_NAME, "Страница уже существует");
             }
         } catch (URISyntaxException | MalformedURLException e) {
-            ctx.sessionAttribute("flash", "Некорректный URL");
+            ctx.sessionAttribute(FLASH_NAME, "Некорректный URL");
         } catch (IllegalArgumentException e) {
-            ctx.sessionAttribute("flash", e.getMessage());
+            ctx.sessionAttribute(FLASH_NAME, e.getMessage());
         }
         ctx.redirect(NamedRoutes.urlsPath());
     }
@@ -46,7 +52,7 @@ public class UrlsController {
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         var page = new UrlsPage(urls);
-        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
         ctx.render(NamedRoutes.urlsTemplate(), model("page", page));
     }
 
