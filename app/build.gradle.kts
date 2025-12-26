@@ -35,6 +35,9 @@ sonar {
 }
 
 dependencies {
+    implementation(platform("com.konghq:unirest-java-bom:4.5.1"))
+    implementation("com.konghq:unirest-java-core")
+    implementation("com.konghq:unirest-modules-jackson")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.27.3")
