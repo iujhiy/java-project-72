@@ -1,9 +1,18 @@
 plugins {
     id ("org.sonarqube") version "7.0.1.6134"
     id("com.github.ben-manes.versions") version "0.52.0"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "9.3.0"
     application
     checkstyle
+    jacoco
+}
+
+testing {
+    suites {
+        val test by getting(JvmTestSuite::class) {
+            useJUnitJupiter("5.11.0")  // Явно указываем JUnit
+        }
+    }
 }
 
 group = "hexlet.code"
@@ -41,6 +50,21 @@ dependencies {
     annotationProcessor ("org.projectlombok:lombok:1.18.30")
 }
 
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required = true
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.13"
+    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
+}
+
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }
