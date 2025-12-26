@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class App {
-    private static final String DEFAULT_DATABASE_URL = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1";
+    private static final String DEFAULT_DATABASE_URL = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;MODE=PostgreSQL";
 
     private static String readRecourseFile(String filename) throws IOException {
         var inputStream = App.class.getClassLoader().getResourceAsStream(filename);
