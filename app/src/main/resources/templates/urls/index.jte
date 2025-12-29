@@ -8,16 +8,41 @@
 @template.layout.page(
 page = page,
 content = @`
-    @if (page.getUrls() == null)
-        <p>Список URL пуст</p>
-    @else
-        @for(var url: page.getUrls())
-            <a href="${NamedRoutes.urlPath(url.getId())}">
-                <h2>
-                    ${url.getId() + ": " + url.getName()}
-                </h2>
-            </a>
-        @endfor
-    @endif
+    <div class="section">
+        <div class="container">
+            <h1 class="mt-4 mb-2">Сайты</h1>
+            <div class="row">
+                <div class="table-responsive table table-hover">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="col-1">ID</th>
+                            <th scope="col">Имя</th>
+                            <th scope="col" class="col-2">Последняя проверка</th>
+                            <th scope="col" class="col-1">Код ответа</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (page.getUrls() != null)
+                            @for(var url: page.getUrls())
+                                <tr>
+                                    <td>${url.getId()}</td>
+                                    <td>
+                                        <a href="${NamedRoutes.urlPath(url.getId())}">
+                                            ${url.getName()}
+                                        </a>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            @endfor
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 `
 )
