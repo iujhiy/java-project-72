@@ -26,11 +26,11 @@ public final class NamedRoutes {
         return "/urls/" + id;
     }
 
-    public static String urlChecksPath(int id) {
-        return urlChecksPath(String.valueOf(id));
+    public static String urlChecksPath(int urlId) {
+        return urlChecksPath(String.valueOf(urlId));
     }
 
-    public static String urlChecksPath(String id) {
-        return "/urls/" + id + "/checks";
+    public static String urlChecksPath(String urlId) {
+        return "/urls/" + urlId + "/checks";
     }
 }

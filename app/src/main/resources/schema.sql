@@ -14,12 +14,12 @@ CREATE TABLE urls_check (
     h1 VARCHAR(63),
     description TEXT,
     created_at TIMESTAMP,
-    urls_id INT
+    url_id INT
 );
 
 ALTER TABLE urls_check
 ADD CONSTRAINT fk_urls_urls_check
-    FOREIGN KEY (urls_id)
+    FOREIGN KEY (url_id)
     REFERENCES urls(id)
     ON DELETE CASCADE
     ON UPDATE CASCADE;

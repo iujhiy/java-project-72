@@ -39,9 +39,19 @@
         </div>
     </div>
 </nav>
-<main class="container-fluid">
+<main class="container-fluid p-0">
     @if (page != null && page.getFlash() != null)
-        <p>${page.getFlash()}</p>
+        @if (page.getFlash().equals("Страница успешно добавлена"))
+            <div class="m-0 alert alert-success alert-dismissible show fade" role="alert">
+                <p class="m-0">${page.getFlash()}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @else
+            <div class="m-0 alert alert-info alert-dismissible show fade" role="alert">
+                <p class="m-0">${page.getFlash()}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
     @endif
     ${content}
 </main>

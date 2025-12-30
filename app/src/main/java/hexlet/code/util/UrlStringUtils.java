@@ -7,6 +7,9 @@ public final class UrlStringUtils {
         throw new AssertionError("This is utility class");
     }
 
+    public static final String FLASH_NAME = "flash";
+    public static final String URL_CHECK_PAGE = "UrlCheckPage";
+
     public static String makeClearURL(URL url) {
         StringBuilder clearUrl = new StringBuilder();
         clearUrl.append(url.getProtocol())

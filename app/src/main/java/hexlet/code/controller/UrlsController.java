@@ -1,8 +1,10 @@
 package hexlet.code.controller;
 
+import hexlet.code.dto.checks.UrlCheckPage;
 import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.UrlStringUtils;
@@ -15,6 +17,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 
+import static hexlet.code.util.UrlStringUtils.FLASH_NAME;
+import static hexlet.code.util.UrlStringUtils.URL_CHECK_PAGE;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 
@@ -23,7 +27,6 @@ public final class UrlsController {
         throw new AssertionError("This is utility class");
     }
 
-    private static final String FLASH_NAME = "flash";
 
     public static void create(Context ctx) throws SQLException {
         var urlString = ctx.formParam("url");
@@ -61,6 +64,8 @@ public final class UrlsController {
         var url = UrlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("Url с id '" + id + "' не найден"));
         var page = new UrlPage(url);
-        ctx.render(NamedRoutes.urlTemplate(), model("page", page));
+        page.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
+        var urlCheckPage = ctx.consumeSessionAttribute(URL_CHECK_PAGE);
+        ctx.render(NamedRoutes.urlTemplate(), model("urlPage", page, "urlCheckPage", urlCheckPage));
     }
 }

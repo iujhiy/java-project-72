@@ -81,7 +81,8 @@ public class App {
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
-        app.post(NamedRoutes.urlChecksPath("{id}"), UrlChecksController::build);
+        app.post(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::build);
+        //app.get(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::show);
 
         handeExceptions(app);
 

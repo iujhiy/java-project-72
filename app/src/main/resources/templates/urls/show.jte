@@ -1,17 +1,19 @@
+@import hexlet.code.dto.checks.UrlCheckPage
 @import hexlet.code.dto.urls.UrlPage
 @import hexlet.code.util.NamedRoutes
 
-@param UrlPage page
+@param UrlPage urlPage
+@param UrlCheckPage urlCheckPage
 
 @template.layout.page(
     content = @`
         <h1>
-            Сайт: ${page.getUrl().getName()}
+            Сайт: ${urlPage.getUrl().getName()}
         </h1>
         <h2>
             Проверки:
         </h2>
-        <form action="${NamedRoutes.urlChecksPath(page.getUrl().getId())}" method="post">
+        <form action="${NamedRoutes.urlChecksPath(urlPage.getUrl().getId())}" method="post">
             <div class="form-group">
                 <button type="submit" name="submitButton">Проверить</button>
             </div>

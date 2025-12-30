@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.model.Url;
+import hexlet.code.repository.BaseRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
@@ -20,7 +21,7 @@ public class AppTest {
     public final void setUp() throws SQLException, IOException {
         System.setProperty("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;MODE=PostgreSQL");
         app = App.getApp();
-        UrlRepository.removeAll();
+        BaseRepository.clearDataBase();
     }
 
     @AfterEach

@@ -17,10 +17,10 @@ public class UrlRepository extends BaseRepository {
         String sql = "INSERT INTO urls(name, created_at) VALUES(?, ?)";
         try (var conn = dataSource.getConnection();
             var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            var localDateTimeNow = Timestamp.valueOf(LocalDateTime.now());
-            url.setCreatedAt(localDateTimeNow);
+            var currentDateTimeNow = Timestamp.valueOf(LocalDateTime.now());
+            url.setCreatedAt(currentDateTimeNow);
             preparedStatement.setString(1, url.getName());
-            preparedStatement.setTimestamp(2, localDateTimeNow);
+            preparedStatement.setTimestamp(2, currentDateTimeNow);
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -79,14 +79,6 @@ public class UrlRepository extends BaseRepository {
                 }
             }
             return false;
-        }
-    }
-
-    public static void removeAll() throws SQLException {
-        String sql = "TRUNCATE TABLE urls RESTART IDENTITY";
-        try (var conn = dataSource.getConnection();
-            var preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.execute();
         }
     }
 }
