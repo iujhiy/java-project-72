@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import static hexlet.code.util.UrlStringUtils.FLASH_NAME;
-import static hexlet.code.util.UrlStringUtils.URL_CHECK_PAGE;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
 public final class UrlChecksController {
@@ -32,7 +31,6 @@ public final class UrlChecksController {
             var urlCheck = new UrlCheck(urlId, currentDateTimeNow);
             UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute(FLASH_NAME, "Страница успешно проверена");
-            ctx.sessionAttribute(URL_CHECK_PAGE, urlCheck);
             ctx.redirect(NamedRoutes.urlPath(urlId));
         }
     }
@@ -41,8 +39,11 @@ public final class UrlChecksController {
 //        int urlId = ctx.pathParamAsClass("urlId", Integer.class).get();
 //        var urlCheck = UrlCheckRepository.findById(urlId)
 //                .orElseThrow(() -> new NotFoundResponse("Url с urlId '" + urlId + "' не найден"));
+//        var url = UrlRepository.findById(urlId)
+//                .orElseThrow(() -> new NotFoundResponse("Url с urlId '" + urlId + "' не найден"));
 //        var urlCheckPage = new UrlCheckPage(urlCheck);
-//        var urlPage = UrlRepository.findById(urlId);
+//        var urlPage = new UrlPage(url);
+//        urlCheckPage.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
 //        ctx.render(NamedRoutes.urlTemplate(), model("urlPage", urlPage, "urlCheckPage", urlCheckPage));
 //    }
 }

@@ -3,9 +3,10 @@
 @import hexlet.code.util.NamedRoutes
 
 @param UrlPage urlPage
-@param UrlCheckPage urlCheckPage
+@param UrlCheckPage urlCheckPage = null
 
 @template.layout.page(
+    page = urlCheckPage,
     content = @`
         <h1>
             Сайт: ${urlPage.getUrl().getName()}
@@ -18,5 +19,8 @@
                 <button type="submit" name="submitButton">Проверить</button>
             </div>
         </form>
+        @if (urlCheckPage != null)
+            <p>${urlCheckPage.getUrlCheck().getId()}</p>
+        @endif
     `
 )

@@ -5,6 +5,7 @@ import hexlet.code.model.UrlCheck;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class UrlCheckRepository extends BaseRepository {
@@ -25,19 +26,20 @@ public class UrlCheckRepository extends BaseRepository {
         }
     }
 
-    public static Optional<UrlCheck> findById(int id) throws SQLException {
-        String sql = "SELECT * FROM urls_check WHERE id = ? LIMIT 1";
+    public static ArrayList<UrlCheck> getEntitiesById(int urlId) throws SQLException {
+        String sql = "SELECT * FROM urls_check WHERE url_id = ?";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setInt(1, id);
+            preparedStatement.setInt(1, urlId);
             try (var resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
+                var result = new ArrayList<UrlCheck>();
+                while (resultSet.next()) {
                     var urlCheck = createUrlCheck(resultSet);
-                    return Optional.of(urlCheck);
+                    result.add(urlCheck);
                 }
+                return result;
             }
         }
-        return Optional.empty();
     }
 
     public static UrlCheck createUrlCheck(ResultSet resultSet) throws SQLException {
