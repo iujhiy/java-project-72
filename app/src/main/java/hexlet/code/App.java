@@ -43,7 +43,7 @@ public class App {
     }
 
     private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "7072");
+        String port = System.getenv().getOrDefault("PORT", "7077");
         return Integer.parseInt(port);
     }
 
@@ -82,7 +82,7 @@ public class App {
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
         app.post(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::build);
-        app.get(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::show);
+        //app.get(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::show);
 
         handeExceptions(app);
 

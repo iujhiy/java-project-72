@@ -11,11 +11,12 @@ import java.util.Optional;
 public class UrlCheckRepository extends BaseRepository {
 
     public static void save(UrlCheck urlCheck) throws SQLException {
-        var sql = "INSERT INTO urls_check(url_id, created_at) VALUES(?, ?)";
+        var sql = "INSERT INTO urls_check(url_id, created_at, status_code) VALUES(?, ?, ?)";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, urlCheck.getUrlId());
             preparedStatement.setTimestamp(2, urlCheck.getCreatedAt());
+            preparedStatement.setInt(3, urlCheck.getStatusCode());
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -27,7 +28,7 @@ public class UrlCheckRepository extends BaseRepository {
     }
 
     public static ArrayList<UrlCheck> getEntitiesById(int urlId) throws SQLException {
-        String sql = "SELECT * FROM urls_check WHERE url_id = ?";
+        String sql = "SELECT * FROM urls_check WHERE url_id = ? ORDER BY id DESC";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, urlId);

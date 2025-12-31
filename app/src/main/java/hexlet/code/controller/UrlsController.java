@@ -1,10 +1,9 @@
 package hexlet.code.controller;
 
-import hexlet.code.dto.checks.UrlCheckPage;
+import hexlet.code.dto.checks.UrlChecksPage;
 import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
-import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
@@ -60,14 +59,14 @@ public final class UrlsController {
     }
 
     public static void show(Context ctx) throws SQLException {
-        var id = ctx.pathParamAsClass("id", Integer.class).get();
+        int id = ctx.pathParamAsClass("id", Integer.class).get();
         var url = UrlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("Url с id '" + id + "' не найден"));
-        var page = new UrlPage(url);
-        if (!UrlCheckRepository.getEntitiesById(id).isEmpty()) {
-
-        }
-        page.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
-        ctx.render(NamedRoutes.urlTemplate(), model("urlPage", page));
+        var urlPage = new UrlPage(url);
+        var urlChecks = UrlCheckRepository.getEntitiesById(id);
+        var urlChecksPage = new UrlChecksPage(urlChecks);
+        urlPage.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
+        urlChecksPage.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
+        ctx.render(NamedRoutes.urlTemplate(), model("urlPage", urlPage, "urlChecksPage", urlChecksPage));
     }
 }

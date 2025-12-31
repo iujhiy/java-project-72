@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 @Getter @Setter
 public class Url {
@@ -16,4 +17,11 @@ public class Url {
     }
 
     public Url() { }
+
+    public String getCreatedAtAsString() {
+        if (createdAt == null) {
+            return "";
+        }
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(createdAt);
+    }
 }

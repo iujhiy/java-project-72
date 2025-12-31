@@ -1,16 +1,34 @@
-@import hexlet.code.dto.checks.UrlCheckPage
+@import hexlet.code.dto.checks.UrlChecksPage
 @import hexlet.code.dto.urls.UrlPage
 @import hexlet.code.util.NamedRoutes
 
 @param UrlPage urlPage
-@param UrlCheckPage urlCheckPage = null
+@param UrlChecksPage urlChecksPage
 
 @template.layout.page(
-    page = urlCheckPage,
+    page = urlChecksPage,
     content = @`
         <h1>
             Сайт: ${urlPage.getUrl().getName()}
         </h1>
+    <div class="table-responsive table table-hover">
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td>ID</td>
+                <td>${urlPage.getUrl().getId()}</td>
+            </tr>
+            <tr>
+                <td>Имя</td>
+                <td>${urlPage.getUrl().getName()}</td>
+            </tr>
+            <tr>
+                <td>Дата создания</td>
+                <td>${urlPage.getUrl().getCreatedAtAsString()}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
         <h2>
             Проверки:
         </h2>
@@ -19,8 +37,11 @@
                 <button type="submit" name="submitButton">Проверить</button>
             </div>
         </form>
-        @if (urlCheckPage != null)
-            <p>${urlCheckPage.getUrlCheck().getId()}</p>
+        @if (urlChecksPage != null)
+            @for (var urlCheck: urlChecksPage.getUrlChecks())
+                <p>${urlCheck.getId()}</p>
+                <p>${urlCheck.getStatusCode()}</p>
+            @endfor
         @endif
     `
 )

@@ -72,4 +72,14 @@ public class AppTest {
             assertThat(response.body().string()).contains("https://example.com");
         });
     }
+
+    @Test
+    public void testIncorrectUrl() {
+        JavalinTest.test(app, (server, client) -> {
+            var requestBody = "url=example.com";
+            var response = client.post("/urls", requestBody);
+            assertThat(response.code()).isEqualTo(200);
+            assertThat(response.body().string()).contains("https://example.com");
+        });
+    }
 }
