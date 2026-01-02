@@ -1,12 +1,14 @@
+@import hexlet.code.dto.checks.UrlChecksPage
 @import hexlet.code.dto.urls.UrlsPage
 @import gg.jte.Content
 @import hexlet.code.util.NamedRoutes
 
-@param UrlsPage page
+@param UrlsPage urlPage
+@param UrlChecksPage urlChecksPage
 @param Content content
 
 @template.layout.page(
-page = page,
+page = urlPage,
 content = @`
     <div class="section">
         <div class="container">
@@ -23,8 +25,8 @@ content = @`
                         </tr>
                         </thead>
                         <tbody>
-                        @if (page.getUrls() != null)
-                            @for(var url: page.getUrls())
+                        @if (urlPage.getUrls() != null)
+                            @for(var url: urlPage.getUrls())
                                 <tr>
                                     <td>${url.getId()}</td>
                                     <td>

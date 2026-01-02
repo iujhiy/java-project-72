@@ -20,14 +20,13 @@ public final class UrlChecksController {
 
     public static void build(Context ctx) throws SQLException {
         int urlId = ctx.pathParamAsClass("urlId", Integer.class).get();
-        var url = UrlRepository.findById(urlId);
-        if (url.isEmpty()) {
+        var urlOptional = UrlRepository.findById(urlId);
+        if (urlOptional.isEmpty()) {
             ctx.sessionAttribute(FLASH_NAME, "Сайт с id: " + urlId + " не найден");
             ctx.redirect(NamedRoutes.urlsPath());
         } else {
-            var currentDateTimeNow = Timestamp.valueOf(LocalDateTime.now());
-            var urlCheck = new UrlCheck(urlId, currentDateTimeNow);
-            urlCheck.setStatusCode(UrlChecker.getStatusCode(url.get().getName()));
+            var statusCode = UrlChecker.getStatusCode(urlOptional.get().getName());
+            var urlCheck = new UrlCheck(urlId, statusCode);
             UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute(FLASH_NAME, "Страница успешно проверена");
             ctx.redirect(NamedRoutes.urlPath(urlId));

@@ -43,11 +43,41 @@ public class UrlCheckRepository extends BaseRepository {
         }
     }
 
+    public static ArrayList<UrlCheck> getLastChecks() throws SQLException {
+        String sql = """
+            SELECT u_chk.url_id,
+                   u_chk.status_code,
+                   u_chk.created_at,
+                   last_chk.max_id
+            FROM urls_check u_chk
+            JOIN
+                (SELECT url_id, MAX(id) as max_id
+                 FROM urls_check
+                 GROUP BY url_id) as last_chk
+            ON u_chk.id = last_chk.max_id
+        """;
+        try (var conn = dataSource.getConnection();
+             var preparedStatement = conn.prepareStatement(sql)) {
+            try (var resultSet = preparedStatement.executeQuery()) {
+                var result = new ArrayList<UrlCheck>();
+                while (resultSet.next()) {
+                    var urlCheck = createUrlCheck(resultSet);
+                    result.add(urlCheck);
+                }
+                return result;
+            }
+        }
+    }
+
     public static UrlCheck createUrlCheck(ResultSet resultSet) throws SQLException {
         var urlCheck = new UrlCheck();
         urlCheck.setId(resultSet.getInt("id"));
         urlCheck.setUrlId(resultSet.getInt("url_id"));
         urlCheck.setCreatedAt(resultSet.getTimestamp("created_at"));
+        urlCheck.setStatusCode(resultSet.getInt("status_code"));
+//        urlCheck.setTitle();
+//        urlCheck.setDescription();
+//        urlCheck.setH1();
         return urlCheck;
     }
 }
