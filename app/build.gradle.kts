@@ -51,6 +51,7 @@ dependencies {
     implementation("gg.jte:jte:3.2.1")
     compileOnly ("org.projectlombok:lombok:1.18.30")
     annotationProcessor ("org.projectlombok:lombok:1.18.30")
+    testImplementation("com.squareup.okhttp3:mockwebserver3:5.3.0")
 }
 
 tasks.jacocoTestReport {

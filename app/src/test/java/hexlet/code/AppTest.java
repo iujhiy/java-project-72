@@ -5,9 +5,8 @@ import hexlet.code.repository.BaseRepository;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.Javalin;
 import io.javalin.testtools.JavalinTest;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import mockwebserver3.MockWebServer;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -16,6 +15,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTest {
     private Javalin app;
+    private static MockWebServer mockServer;
+    private static String mockServerUrl;
+
+    @BeforeAll
+    public static void setUpAll() throws IOException {
+        mockServer = new MockWebServer();
+        mockServerUrl = mockServer.url("/").toString();
+        mockServer.start();
+    }
+
+    @AfterAll
+    public static void clearAll() {
+        if (mockServer != null) {
+            mockServer.close();
+        }
+    }
 
     @BeforeEach
     public final void setUp() throws SQLException, IOException {
@@ -25,7 +40,7 @@ public class AppTest {
     }
 
     @AfterEach
-    public final void clearAll() {
+    public final void clearDatabase() {
         System.clearProperty("JDBC_DATABASE_URL");
     }
 

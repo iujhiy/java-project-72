@@ -11,7 +11,7 @@
 @template.layout.page(
 page = urlPage,
 content = @`
-    <div class="section">
+    <section>
         <div class="container">
             <h1 class="mt-4 mb-2">Сайты</h1>
             <div class="row">
@@ -59,7 +59,6 @@ content = @`
                 </div>
             </div>
         </div>
-    </div>
-
+    </section>
 `
 )
