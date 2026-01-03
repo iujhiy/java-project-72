@@ -10,7 +10,7 @@ plugins {
 testing {
     suites {
         val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter("5.11.0")  // Явно указываем JUnit
+            useJUnitJupiter("5.11.0")
         }
     }
 }

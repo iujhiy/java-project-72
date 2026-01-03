@@ -48,13 +48,13 @@ public class UrlCheckRepository extends BaseRepository {
             SELECT u_chk.url_id,
                    u_chk.status_code,
                    u_chk.created_at,
-                   last_chk.max_id
+                   last_chk.id
             FROM urls_check u_chk
             JOIN
-                (SELECT url_id, MAX(id) as max_id
+                (SELECT url_id, MAX(id) as id
                  FROM urls_check
                  GROUP BY url_id) as last_chk
-            ON u_chk.id = last_chk.max_id
+            ON u_chk.id = last_chk.id
         """;
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql)) {

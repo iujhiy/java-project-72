@@ -1,6 +1,8 @@
 package hexlet.code.util;
 
 import java.net.URL;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public final class UrlStringUtils {
     private UrlStringUtils() {
@@ -20,4 +22,10 @@ public final class UrlStringUtils {
         return clearUrl.toString().trim().toLowerCase();
     }
 
+    public static String getCreatedAtAsString(Timestamp createdAt) {
+        if (createdAt == null) {
+            return "";
+        }
+        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(createdAt);
+    }
 }

@@ -53,9 +53,12 @@ public final class UrlsController {
 
     public static void index(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        var page = new UrlsPage(urls);
-        page.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
-        ctx.render(NamedRoutes.urlsTemplate(), model("page", page));
+        var urlPage = new UrlsPage(urls);
+        var lastChecks = UrlCheckRepository.getLastChecks();
+        var lastChecksPage = new UrlChecksPage(lastChecks);
+        urlPage.setFlash(ctx.consumeSessionAttribute(FLASH_NAME));
+        ctx.render(NamedRoutes.urlsTemplate(),
+                model("urlPage", urlPage, "lastChecksPage", lastChecksPage));
     }
 
     public static void show(Context ctx) throws SQLException {

@@ -43,7 +43,7 @@ public class App {
     }
 
     private static int getPort() {
-        String port = System.getenv().getOrDefault("PORT", "7077");
+        String port = System.getenv().getOrDefault("PORT", "7070");
         return Integer.parseInt(port);
     }
 
@@ -55,7 +55,7 @@ public class App {
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
         var url = System.getenv("JDBC_DATABASE_URL") == null // если не установлена переменная окружения
-                ? DEFAULT_DATABASE_URL // ставим свою на h2 базу
+                ? DEFAULT_DATABASE_URL // запускаем h2 базу
                 : System.getenv("JDBC_DATABASE_URL");
         hikariConfig.setJdbcUrl(url);
         var dataSource = new HikariDataSource(hikariConfig);

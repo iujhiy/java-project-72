@@ -2,9 +2,10 @@
 @import hexlet.code.dto.urls.UrlsPage
 @import gg.jte.Content
 @import hexlet.code.util.NamedRoutes
+@import hexlet.code.util.UrlStringUtils
 
 @param UrlsPage urlPage
-@param UrlChecksPage urlChecksPage
+@param UrlChecksPage lastChecksPage
 @param Content content
 
 @template.layout.page(
@@ -34,8 +35,22 @@ content = @`
                                             ${url.getName()}
                                         </a>
                                     </td>
-                                    <td></td>
-                                    <td></td>
+                                    @if (lastChecksPage.getUrlChecks() != null)
+                                        @for(var urlCheck: lastChecksPage.getUrlChecks())
+                                            @if (url.getId() == urlCheck.getUrlId())
+                                                <td>
+                                                    ${UrlStringUtils.getCreatedAtAsString(
+                                                        urlCheck.getCreatedAt()
+                                                    )}
+                                                </td>
+                                                <td>${urlCheck.getStatusCode()}</td>
+                                                break;
+                                            @endif
+                                        @endfor
+                                    @else
+                                        <td></td>
+                                        <td></td>
+                                    @endif
                                 </tr>
                             @endfor
                         @endif

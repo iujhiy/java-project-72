@@ -17,11 +17,4 @@ public class Url {
     }
 
     public Url() { }
-
-    public String getCreatedAtAsString() {
-        if (createdAt == null) {
-            return "";
-        }
-        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(createdAt);
-    }
 }
