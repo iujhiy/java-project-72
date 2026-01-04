@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UrlCheck {
     int id;
-    int statusCode;
-    String title;
-    String h1;
-    StringBuilder description;
+    int statusCode = 0;
+    String title = "";
+    String h1 = "";
+    StringBuilder description = new StringBuilder("");
     int urlId;
     Timestamp createdAt;
 

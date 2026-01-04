@@ -44,7 +44,6 @@ content = @`
                                                     )}
                                                 </td>
                                                 <td>${urlCheck.getStatusCode()}</td>
-                                                break;
                                             @endif
                                         @endfor
                                     @else
