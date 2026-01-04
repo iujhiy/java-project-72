@@ -23,6 +23,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
+import static hexlet.code.util.UrlStringUtils.FLASH_NAME;
+import static io.javalin.rendering.template.TemplateUtil.model;
+
 @Slf4j
 public class App {
     private static final String DEFAULT_DATABASE_URL = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;MODE=PostgreSQL";
@@ -75,14 +78,16 @@ public class App {
 
         app.before(ctx -> ctx.contentType("text/html; charset=UTF-8"));
 
-        app.get("/", ctx -> ctx.render("index.jte"));
+        app.get("/", ctx -> {
+            var flash = ctx.consumeSessionAttribute(FLASH_NAME);
+            ctx.render("index.jte", model("flash", flash));
+        });
 
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
         app.post(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::build);
-        //app.get(NamedRoutes.urlChecksPath("{urlId}"), UrlChecksController::show);
 
         handeExceptions(app);
 

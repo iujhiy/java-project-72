@@ -9,7 +9,7 @@
 @param Content content
 
 @template.layout.page(
-page = urlPage,
+flash = urlPage.getFlash(),
 content = @`
     <section>
         <div class="container">

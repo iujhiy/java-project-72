@@ -40,15 +40,18 @@ public final class UrlsController {
             if (!UrlRepository.isAlreadyExists(result)) {
                 UrlRepository.save(result);
                 ctx.sessionAttribute(FLASH_NAME, "Страница успешно добавлена");
+                ctx.redirect(NamedRoutes.urlsPath());
             } else {
                 ctx.sessionAttribute(FLASH_NAME, "Страница уже существует");
-            }
+                ctx.status(409);
+                            }
         } catch (URISyntaxException | MalformedURLException e) {
             ctx.sessionAttribute(FLASH_NAME, "Некорректный URL");
+            ctx.status(400);
         } catch (IllegalArgumentException e) {
             ctx.sessionAttribute(FLASH_NAME, e.getMessage());
+            ctx.status(400);
         }
-        ctx.redirect(NamedRoutes.urlsPath());
     }
 
     public static void index(Context ctx) throws SQLException {

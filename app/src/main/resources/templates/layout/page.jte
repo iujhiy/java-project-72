@@ -1,8 +1,7 @@
 @import gg.jte.Content
-@import hexlet.code.dto.BasePage
 
-@param BasePage page = null
 @param Content content
+@param String flash = null
 
 <!doctype html>
 <html lang="ru">
@@ -40,15 +39,15 @@
     </div>
 </nav>
 <main class="container-fluid p-0">
-    @if (page != null && page.getFlash() != null)
-        @if (page.getFlash().equals("Страница успешно добавлена"))
+    @if (flash != null)
+        @if (flash.equals("Страница успешно добавлена"))
             <div class="m-0 alert alert-success alert-dismissible show fade" role="alert">
-                <p class="m-0">${page.getFlash()}</p>
+                <p class="m-0">${flash}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @else
-            <div class="m-0 alert alert-info alert-dismissible show fade" role="alert">
-                <p class="m-0">${page.getFlash()}</p>
+            <div class="m-0 alert alert-danger alert-dismissible show fade" role="alert">
+                <p class="m-0">${flash}</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif

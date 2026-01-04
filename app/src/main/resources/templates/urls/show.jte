@@ -7,9 +7,21 @@
 @param UrlChecksPage urlChecksPage
 
 @template.layout.page(
-    page = urlChecksPage,
+    flash = urlChecksPage.getFlash(),
     content = @`
     <div class="flex-grow-1">
+    @if (urlPage != null && urlPage.getFlash() != null)
+        <div class="m-0 alert alert-success alert-dismissible show fade" role="alert">
+            <p class="m-0">${urlPage.getFlash()}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if (urlChecksPage != null && urlChecksPage.getFlash() != null)
+        <div class="m-0 alert alert-success alert-dismissible show fade" role="alert">
+            <p class="m-0">${urlChecksPage.getFlash()}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
         <section>
             <div class="container-lg mt-5">
                 <h1 class="mb-3 p-0">
@@ -47,12 +59,12 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="w-10">ID</th>
-                                    <th class="w-10">Код ответа</th>
-                                    <th class="w-20">title</th>
-                                    <th class="w-10">h1</th>
-                                    <th class="w-30">description</th>
-                                    <th class="w-20">Дата проверки</th>
+                                    <th scope="col" class="w-10">ID</th>
+                                    <th scope="col" class="w-10">Код ответа</th>
+                                    <th scope="col" class="w-20">title</th>
+                                    <th scope="col" class="w-10">h1</th>
+                                    <th scope="col" class="w-30">description</th>
+                                    <th scope="col" class="w-20">Дата проверки</th>
                                 </tr>
                             </thead>
                             <tbody>

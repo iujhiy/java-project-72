@@ -1,6 +1,9 @@
 @import hexlet.code.util.NamedRoutes
 
+@param String flash = null
+
 @template.layout.page(
+flash = flash,
 content = @`
     <section>
         <div class="row bg-dark justify-content-center">
