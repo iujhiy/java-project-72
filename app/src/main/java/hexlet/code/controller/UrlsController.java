@@ -44,7 +44,7 @@ public final class UrlsController {
             } else {
                 ctx.sessionAttribute(FLASH_NAME, "Страница уже существует");
                 ctx.status(409);
-                            }
+            }
         } catch (URISyntaxException | MalformedURLException e) {
             ctx.sessionAttribute(FLASH_NAME, "Некорректный URL");
             ctx.status(400);

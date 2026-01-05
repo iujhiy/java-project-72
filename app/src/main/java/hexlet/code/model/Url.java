@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 @Getter @Setter
 public class Url {

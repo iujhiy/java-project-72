@@ -3,7 +3,7 @@ package hexlet.code;
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import io.javalin.testtools.JavalinTest;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

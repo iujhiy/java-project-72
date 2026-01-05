@@ -8,8 +8,6 @@ import hexlet.code.util.UrlChecker;
 import io.javalin.http.Context;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
 import static hexlet.code.util.UrlStringUtils.FLASH_NAME;
 

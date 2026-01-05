@@ -1,14 +1,11 @@
 package hexlet.code.repository;
 
-import hexlet.code.App;
 import hexlet.code.BaseTestClass;
 import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,10 +22,10 @@ public class UrlsCheckRepositoryTest extends BaseTestClass {
     public void testUrlCheckSave() throws SQLException {
         final var urlId = 1;
         var statusCode = 200;
-        var urlCheck1 = new UrlCheck(urlId,statusCode);
+        var urlCheck1 = new UrlCheck(urlId, statusCode);
         UrlCheckRepository.save(urlCheck1);
         statusCode = 404;
-        var urlCheck2 = new UrlCheck(urlId,statusCode);
+        var urlCheck2 = new UrlCheck(urlId, statusCode);
         UrlCheckRepository.save(urlCheck2);
         var urlChecksFromDB = UrlCheckRepository.getEntitiesById(urlId);
         assertThat(urlChecksFromDB.size()).isEqualTo(2);

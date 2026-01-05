@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class UrlCheckRepository extends BaseRepository {
 
@@ -55,7 +54,7 @@ public class UrlCheckRepository extends BaseRepository {
                  FROM urls_check
                  GROUP BY url_id) as last_chk
             ON u_chk.id = last_chk.id
-        """;
+            """;
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql)) {
             try (var resultSet = preparedStatement.executeQuery()) {
