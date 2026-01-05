@@ -24,6 +24,7 @@ public final class UrlChecksController {
             ctx.redirect(NamedRoutes.urlsPath());
         } else {
             var statusCode = UrlChecker.getStatusCode(urlOptional.get().getName());
+
             var urlCheck = new UrlCheck(urlId, statusCode);
             UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute(FLASH_NAME, "Страница успешно проверена");

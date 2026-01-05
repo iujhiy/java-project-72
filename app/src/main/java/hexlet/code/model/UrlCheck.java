@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 public class UrlCheck {
     int id;
     int statusCode = 0;
-    String title = "";
-    String h1 = "";
-    StringBuilder description = new StringBuilder("");
+    String title;
+    String h1;
+    StringBuilder description;
     int urlId;
     Timestamp createdAt;
 

@@ -74,7 +74,7 @@ public class UrlCheckRepository extends BaseRepository {
         urlCheck.setUrlId(resultSet.getInt("url_id"));
         urlCheck.setCreatedAt(resultSet.getTimestamp("created_at"));
         urlCheck.setStatusCode(resultSet.getInt("status_code"));
-//        urlCheck.setTitle();
+//   проверить на null     urlCheck.setTitle();
 //        urlCheck.setDescription();
 //        urlCheck.setH1();
         return urlCheck;
