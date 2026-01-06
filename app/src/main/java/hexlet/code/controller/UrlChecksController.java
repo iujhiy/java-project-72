@@ -25,10 +25,10 @@ public final class UrlChecksController {
         } else {
             var url = urlOptional.get().getName();
             var statusCode = UrlChecker.getStatusCode(url);
-            var seoAnalyseMap = UrlChecker.startSEOAnalyse(url);
+            var seoAnalysisMap = UrlChecker.startSEOAnalysis(url);
             var urlCheck = new UrlCheck(urlId, statusCode);
             UrlCheckRepository.save(urlCheck);
-            for (var set: seoAnalyseMap.entrySet()) {
+            for (var set: seoAnalysisMap.entrySet()) {
                 var value = set.getValue();
                 var columnName = set.getKey();
                 if (value != null && !value.isEmpty()) {

@@ -19,7 +19,7 @@ public class UrlChecker {
         }
     }
 
-    public static Map<String, String> startSEOAnalyse(String url) {
+    public static Map<String, String> startSEOAnalysis(String url) {
         var resultMap = new HashMap<String, String>();
         String h1 = "";
         String description = "";
