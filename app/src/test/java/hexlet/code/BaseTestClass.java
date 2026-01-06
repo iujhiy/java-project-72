@@ -22,4 +22,5 @@ public class BaseTestClass {
     public final void clearDatabase() {
         System.clearProperty("JDBC_DATABASE_URL");
     }
+
 }
