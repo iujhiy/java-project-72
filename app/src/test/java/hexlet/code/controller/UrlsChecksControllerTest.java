@@ -37,6 +37,9 @@ public class UrlsChecksControllerTest extends BaseTestClass {
             mockServer.enqueue(new MockResponse.Builder()
                     .code(200)
                     .build());
+            mockServer.enqueue(new MockResponse.Builder()
+                    .code(200)
+                    .build());
             var testUrl = mockServerUrl.endsWith("/")
                     ? mockServerUrl.substring(0, mockServerUrl.length() - 1)
                     : mockServerUrl;

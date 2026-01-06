@@ -41,6 +41,7 @@ public final class UrlsController {
                 UrlRepository.save(result);
                 ctx.sessionAttribute(FLASH_NAME, "Страница успешно добавлена");
                 ctx.redirect(NamedRoutes.urlsPath());
+                return;
             } else {
                 ctx.sessionAttribute(FLASH_NAME, "Страница уже существует");
                 ctx.status(409);
@@ -52,6 +53,7 @@ public final class UrlsController {
             ctx.sessionAttribute(FLASH_NAME, e.getMessage());
             ctx.status(400);
         }
+        index(ctx); // отрисовываем старницу /urls без сохранения в БД и с определенным статусом
     }
 
     public static void index(Context ctx) throws SQLException {

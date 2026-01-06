@@ -10,7 +10,7 @@ CREATE TABLE urls (
 CREATE TABLE urls_check (
     id SERIAL PRIMARY KEY,
     status_code INT,
-    title VARCHAR(63),
+    title VARCHAR(255),
     h1 VARCHAR(63),
     description TEXT,
     created_at TIMESTAMP,

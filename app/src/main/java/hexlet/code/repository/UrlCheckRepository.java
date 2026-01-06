@@ -1,11 +1,12 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.UrlCheck;
+import hexlet.code.util.UrlStringUtils;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class UrlCheckRepository extends BaseRepository {
 
@@ -34,7 +35,7 @@ public class UrlCheckRepository extends BaseRepository {
             try (var resultSet = preparedStatement.executeQuery()) {
                 var result = new ArrayList<UrlCheck>();
                 while (resultSet.next()) {
-                    var urlCheck = createUrlCheck(resultSet);
+                    var urlCheck = UrlStringUtils.createUrlCheck(resultSet);
                     result.add(urlCheck);
                 }
                 return result;
@@ -60,7 +61,7 @@ public class UrlCheckRepository extends BaseRepository {
             try (var resultSet = preparedStatement.executeQuery()) {
                 var result = new ArrayList<UrlCheck>();
                 while (resultSet.next()) {
-                    var urlCheck = createUrlCheck(resultSet);
+                    var urlCheck = UrlStringUtils.createUrlCheck(resultSet);
                     result.add(urlCheck);
                 }
                 return result;
@@ -68,15 +69,20 @@ public class UrlCheckRepository extends BaseRepository {
         }
     }
 
-    public static UrlCheck createUrlCheck(ResultSet resultSet) throws SQLException {
-        var urlCheck = new UrlCheck();
-        urlCheck.setId(resultSet.getInt("id"));
-        urlCheck.setUrlId(resultSet.getInt("url_id"));
-        urlCheck.setCreatedAt(resultSet.getTimestamp("created_at"));
-        urlCheck.setStatusCode(resultSet.getInt("status_code"));
-//   проверить на null     urlCheck.setTitle();
-//        urlCheck.setDescription();
-//        urlCheck.setH1();
-        return urlCheck;
+    public static void saveString(String columnName, String value, int id)
+            throws SQLException, IllegalAccessException {
+        Set<String> allowedColumns = Set.of("h1", "title", "description");
+        if (!allowedColumns.contains(columnName)) {
+            throw new IllegalAccessException("Недопустимое значение столбца");
+        }
+        var sql = "UPDATE urls_check SET " + columnName + " = ? WHERE id = ?";
+        try (var conn = dataSource.getConnection();
+             var preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setString(1, value);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        }
     }
+
+
 }
