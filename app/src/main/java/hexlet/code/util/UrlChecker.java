@@ -14,7 +14,6 @@ public class UrlChecker {
             HttpResponse<String> response = Unirest.get(url).asString();
             return response.getStatus();
         } catch (Exception e) {
-            e.printStackTrace();
             return -1;
         }
     }
