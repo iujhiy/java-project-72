@@ -39,6 +39,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.27.3")
     testImplementation("com.squareup.okhttp3:mockwebserver3:5.3.0")
+    testImplementation("com.h2database:h2:2.2.224")
     runtimeOnly("com.h2database:h2:2.2.224")
     implementation(platform("com.konghq:unirest-java-bom:4.5.1"))
     implementation("com.konghq:unirest-java-core")
