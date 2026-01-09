@@ -12,10 +12,9 @@ public class BaseRepository {
     public static void clearDataBase() throws SQLException {
         try (var conn = dataSource.getConnection();
              var statement = conn.createStatement()) {
-
             // 1. Удаляем все данные из таблиц (работает везде)
-            statement.executeUpdate("DELETE FROM urls_check");
-            statement.executeUpdate("DELETE FROM urls");
+            statement.executeUpdate("DELETE FROM urls_check CASCADE");
+            statement.executeUpdate("DELETE FROM urls CASCADE");
 
             // 2. Пробуем сбросить автоинкремент разными способами
             // Сначала пробуем синтаксис PostgreSQL (работает и для H2 с MODE=PostgreSQL)
