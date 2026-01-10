@@ -47,7 +47,6 @@ dependencies {
     implementation("io.javalin:javalin:6.6.0")
     implementation("io.javalin:javalin-bundle:6.6.0")
     implementation("io.javalin:javalin-rendering:6.6.0")
-    implementation("org.slf4j:slf4j-simple:2.0.17")
     implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("org.postgresql:postgresql:42.7.7")
     implementation("gg.jte:jte:3.2.1")
