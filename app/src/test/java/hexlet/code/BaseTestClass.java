@@ -1,6 +1,5 @@
 package hexlet.code;
 
-import hexlet.code.repository.BaseRepository;
 import io.javalin.Javalin;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +14,7 @@ public class BaseTestClass {
     public final void setUp() throws SQLException, IOException {
         System.setProperty("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;MODE=PostgreSQL");
         app = App.getApp();
-        BaseRepository.clearDataBase();
+        //BaseRepository.clearDataBase();
     }
 
     @AfterEach
