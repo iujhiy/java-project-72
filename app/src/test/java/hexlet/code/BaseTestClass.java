@@ -1,7 +1,6 @@
 package hexlet.code;
 
 import io.javalin.Javalin;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
