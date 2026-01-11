@@ -1,5 +1,6 @@
 package hexlet.code.model;
 
+import hexlet.code.util.UrlChecker;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,10 @@ public class UrlCheck {
         this.urlId = urlId;
         this.createdAt = Timestamp.valueOf(LocalDateTime.now());
         this.statusCode = statusCode;
+    }
+
+    public UrlCheck(int urlId) {
+        this.urlId = urlId;
     }
 
 }

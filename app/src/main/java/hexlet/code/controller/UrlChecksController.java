@@ -24,11 +24,12 @@ public final class UrlChecksController {
             ctx.redirect(NamedRoutes.urlsPath());
             return;
         }
+        var urlCheck = new UrlCheck(urlId);
         try {
             var url = urlOptional.get().getName();
             var statusCode = UrlChecker.getStatusCode(url);
             var seoAnalysisMap = UrlChecker.startSEOAnalysis(url);
-            var urlCheck = new UrlCheck(urlId, statusCode);
+            urlCheck.setStatusCode(statusCode);
             UrlCheckRepository.save(urlCheck);
             for (var set: seoAnalysisMap.entrySet()) {
                 var value = set.getValue();
@@ -39,6 +40,7 @@ public final class UrlChecksController {
             }
             ctx.sessionAttribute(FLASH_NAME, "Страница успешно проверена");
         } catch (Exception e) {
+            UrlCheckRepository.save(urlCheck);
             ctx.sessionAttribute(FLASH_NAME, "Не удалось проверить сайт: " + e.getMessage());
         }
         ctx.redirect(NamedRoutes.urlPath(urlId));
