@@ -11,7 +11,7 @@ import java.util.Set;
 public class UrlCheckRepository extends BaseRepository {
 
     public static void save(UrlCheck urlCheck) throws SQLException {
-        var sql = "INSERT INTO urls_check(url_id, created_at, status_code) VALUES(?, ?, ?)";
+        var sql = "INSERT INTO url_checks(url_id, created_at, status_code) VALUES(?, ?, ?)";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setInt(1, urlCheck.getUrlId());
@@ -28,7 +28,7 @@ public class UrlCheckRepository extends BaseRepository {
     }
 
     public static ArrayList<UrlCheck> getEntitiesById(int urlId) throws SQLException {
-        String sql = "SELECT * FROM urls_check WHERE url_id = ? ORDER BY id DESC";
+        String sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY id DESC";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setInt(1, urlId);
@@ -49,10 +49,10 @@ public class UrlCheckRepository extends BaseRepository {
                    u_chk.status_code,
                    u_chk.created_at,
                    last_chk.id
-            FROM urls_check u_chk
+            FROM url_checks u_chk
             JOIN
                 (SELECT url_id, MAX(id) as id
-                 FROM urls_check
+                 FROM url_checks
                  GROUP BY url_id) as last_chk
             ON u_chk.id = last_chk.id
             """;
@@ -75,7 +75,7 @@ public class UrlCheckRepository extends BaseRepository {
         if (!allowedColumns.contains(columnName)) {
             throw new IllegalAccessException("Недопустимое значение столбца");
         }
-        var sql = "UPDATE urls_check SET " + columnName + " = ? WHERE id = ?";
+        var sql = "UPDATE url_checks SET " + columnName + " = ? WHERE id = ?";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setString(1, value);

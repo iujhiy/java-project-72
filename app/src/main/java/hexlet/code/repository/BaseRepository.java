@@ -12,7 +12,7 @@ public class BaseRepository {
 //        try (var conn = dataSource.getConnection();
 //             var statement = conn.createStatement()) {
 //            // 1. Удаляем все данные из таблиц (работает везде)
-//            statement.executeUpdate("DELETE FROM urls_check CASCADE");
+//            statement.executeUpdate("DELETE FROM url_checks CASCADE");
 //            statement.executeUpdate("DELETE FROM urls CASCADE");
 //
 //            // 2. Пробуем сбросить автоинкремент разными способами
@@ -23,7 +23,7 @@ public class BaseRepository {
 //            } catch (SQLException e) {
 //                // Если не сработало, пробуем синтаксис H2
 //                try {
-//                    statement.executeUpdate("ALTER TABLE urls_check ALTER COLUMN id RESTART WITH 1");
+//                    statement.executeUpdate("ALTER TABLE url_checks ALTER COLUMN id RESTART WITH 1");
 //                    statement.executeUpdate("ALTER TABLE urls ALTER COLUMN id RESTART WITH 1");
 //                } catch (SQLException e2) {
 //                    // Если и это не сработало, пробуем с IF EXISTS для PostgreSQL
