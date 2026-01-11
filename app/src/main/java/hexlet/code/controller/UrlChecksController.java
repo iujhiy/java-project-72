@@ -22,7 +22,9 @@ public final class UrlChecksController {
         if (urlOptional.isEmpty()) {
             ctx.sessionAttribute(FLASH_NAME, "Сайт с id: " + urlId + " не найден");
             ctx.redirect(NamedRoutes.urlsPath());
-        } else {
+            return;
+        }
+        try {
             var url = urlOptional.get().getName();
             var statusCode = UrlChecker.getStatusCode(url);
             var seoAnalysisMap = UrlChecker.startSEOAnalysis(url);
@@ -36,7 +38,9 @@ public final class UrlChecksController {
                 }
             }
             ctx.sessionAttribute(FLASH_NAME, "Страница успешно проверена");
-            ctx.redirect(NamedRoutes.urlPath(urlId));
+        } catch (Exception e) {
+            ctx.sessionAttribute(FLASH_NAME, "Не удалось проверить сайт: " + e.getMessage());
         }
+        ctx.redirect(NamedRoutes.urlPath(urlId));
     }
 }
