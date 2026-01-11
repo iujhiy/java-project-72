@@ -5,6 +5,8 @@ import hexlet.code.util.UrlStringUtils;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -14,8 +16,10 @@ public class UrlCheckRepository extends BaseRepository {
         var sql = "INSERT INTO url_checks(url_id, created_at, status_code) VALUES(?, ?, ?)";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            var currentDateTimeNow = Timestamp.valueOf(LocalDateTime.now());
+            urlCheck.setCreatedAt(currentDateTimeNow);
             preparedStatement.setInt(1, urlCheck.getUrlId());
-            preparedStatement.setTimestamp(2, urlCheck.getCreatedAt());
+            preparedStatement.setTimestamp(2, currentDateTimeNow);
             preparedStatement.setInt(3, urlCheck.getStatusCode());
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
