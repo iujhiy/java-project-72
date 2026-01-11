@@ -9,9 +9,13 @@ import java.util.Map;
 
 public class UrlChecker {
 
+    private static HttpResponse<String> getResponse(String url) {
+        return Unirest.get(url).requestTimeout(5000).asString();
+    }
+
     public static int getStatusCode(String url) {
         try {
-            HttpResponse<String> response = Unirest.get(url).asString();
+            var response = getResponse(url);
             return response.getStatus();
         } catch (Exception e) {
             return -1;
@@ -22,7 +26,7 @@ public class UrlChecker {
         var resultMap = new HashMap<String, String>();
         String h1 = "";
         String description = "";
-        var response = Unirest.get(url).asString().getBody();
+        var response = getResponse(url).getBody();
         var html = Jsoup.parse(response);
         var title = html.title();
         var h1Element = html.selectFirst("h1");
