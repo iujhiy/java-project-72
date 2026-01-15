@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 import static hexlet.code.util.UrlStringUtils.FLASH_NAME;
 import static io.javalin.rendering.template.TemplateUtil.model;
@@ -74,10 +75,10 @@ public final class UrlsController {
                 model("urlPage", urlPage, "lastChecksPage", lastChecksPage));
     }
 
-    public static void show(Context ctx) throws SQLException {
+    public static void show(Context ctx) throws SQLException, NoSuchElementException {
         int id = ctx.pathParamAsClass("id", Integer.class).get();
         var url = UrlRepository.findById(id)
-                .orElseThrow(() -> new NotFoundResponse("Url с id '" + id + "' не найден"));
+                .orElseThrow(() -> new NoSuchElementException("URL с id '" + id + "' не найден"));
         var urlPage = new UrlPage(url);
         var urlChecks = UrlCheckRepository.getEntitiesById(id);
         var urlChecksPage = new UrlChecksPage(urlChecks);

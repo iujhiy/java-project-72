@@ -2,6 +2,7 @@
 
 @param Content content
 @param String flash = null
+@param String errorFlash = null
 
 <!doctype html>
 <html lang="ru">
@@ -51,6 +52,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+    @endif
+    @if (errorFlash != null)
+        <div class="m-0 alert alert-danger alert-dismissible show fade" role="alert">
+            <p class="m-0">${errorFlash}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     @endif
     ${content}
 </main>

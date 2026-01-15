@@ -13,6 +13,7 @@ public final class UrlStringUtils {
     }
 
     public static final String FLASH_NAME = "flash";
+    public static final String ERROR_FLASH_NAME = "errorFlash";
 
     public static String makeClearURL(URL url) {
         StringBuilder clearUrl = new StringBuilder();

@@ -1,12 +1,14 @@
 @import hexlet.code.util.NamedRoutes
 
 @param String flash = null
+@param String errorFlash = null
 
 @template.layout.page(
 flash = flash,
+errorFlash = errorFlash,
 content = @`
     <section>
-        <div class="row bg-dark justify-content-center">
+        <div class="row bg-dark justify-content-center m-0">
             <div class="col-7 text-left mt-3">
                 <h1 class="display-3 text-white">Анализатор страниц</h1>
                 <p class="lead text-white">Проверить сайт на SEO - пригодность</p>

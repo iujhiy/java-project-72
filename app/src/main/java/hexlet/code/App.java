@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
+import static hexlet.code.util.UrlStringUtils.ERROR_FLASH_NAME;
 import static hexlet.code.util.UrlStringUtils.FLASH_NAME;
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -82,7 +83,9 @@ public class App {
 
         app.get("/", ctx -> {
             var flash = ctx.consumeSessionAttribute(FLASH_NAME);
-            ctx.render("index.jte", model("flash", flash));
+            var errorFlash = ctx.consumeSessionAttribute(ERROR_FLASH_NAME);
+            ctx.render("index.jte", model(FLASH_NAME, flash,
+                    ERROR_FLASH_NAME, errorFlash));
         });
 
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
@@ -100,20 +103,25 @@ public class App {
         app.exception(IllegalArgumentException.class, (e, ctx) -> {
             ctx.status(HttpStatus.BAD_REQUEST);
             log.info(e.getMessage());
-            ctx.json(new ErrorResponse("Bad request", e.getMessage()));
+            var errorResponse = new ErrorResponse("Bad request", e.getMessage());
+            ctx.sessionAttribute(ERROR_FLASH_NAME, errorResponse);
+            ctx.redirect("/");
         });
 
         app.exception(NotFoundResponse.class, (e, ctx) -> {
             ctx.status(HttpStatus.NOT_FOUND);
             log.info(e.getMessage());
-            ctx.json(new ErrorResponse("Not found", e.getMessage()));
+            var errorResponse = new ErrorResponse("Not found", e.getMessage());
+            ctx.sessionAttribute(ERROR_FLASH_NAME, errorResponse.toString());
+            ctx.redirect("/");
         });
 
         app.exception(Exception.class, (e, ctx) -> {
             ctx.status(HttpStatus.INTERNAL_SERVER_ERROR);
             log.info(e.getMessage());
-            ctx.json(new ErrorResponse("Internal server error", e.getMessage()));
+            var errorResponse = new ErrorResponse("Internal server error", e.getMessage());
+            ctx.sessionAttribute(ERROR_FLASH_NAME, errorResponse.toString());
+            ctx.redirect("/");
         });
-
     }
 }

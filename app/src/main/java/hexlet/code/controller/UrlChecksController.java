@@ -15,7 +15,7 @@ public final class UrlChecksController {
         throw new AssertionError("This is utility class");
     }
 
-    public static void build(Context ctx) throws SQLException, IllegalAccessException {
+    public static void build(Context ctx) throws SQLException {
         int urlId = ctx.pathParamAsClass("urlId", Integer.class).get();
         var urlOptional = UrlRepository.findById(urlId);
         if (urlOptional.isEmpty()) {
