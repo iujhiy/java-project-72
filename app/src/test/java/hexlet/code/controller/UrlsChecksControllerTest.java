@@ -59,7 +59,7 @@ public class UrlsChecksControllerTest {
     }
 
     @BeforeEach
-    public void setUp() throws SQLException, IOException {
+    public final void setUp() throws SQLException, IOException {
         app = App.getApp();
         dataSource = App.getDataSource();
     }
