@@ -25,7 +25,7 @@ public class UrlsCheckRepositoryTest extends BaseTestClass {
         TestUtils.saveUrlCheck(dataSource, urlId, statusCode);
         statusCode = 404;
         TestUtils.saveUrlCheck(dataSource, urlId, statusCode);
-        var urlChecksFromDB = UrlCheckRepository.getEntitiesById(urlId);
+        var urlChecksFromDB = TestUtils.getChecksById(dataSource, urlId);
         final var entityCount = 2;
         assertThat(urlChecksFromDB.size()).isEqualTo(entityCount);
         assertThat(urlChecksFromDB.get(0).getUrlId()).isEqualTo(urlId);

@@ -32,6 +32,22 @@ public class TestUtils {
         }
     }
 
+    public static List<UrlCheck> getChecksById(HikariDataSource dataSource, int urlId) throws SQLException {
+        String sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY id DESC";
+        try (var conn = dataSource.getConnection();
+             var preparedStatement = conn.prepareStatement(sql)) {
+            preparedStatement.setInt(1, urlId);
+            try (var resultSet = preparedStatement.executeQuery()) {
+                var result = new ArrayList<UrlCheck>();
+                while (resultSet.next()) {
+                    var urlCheck = createUrlCheck(resultSet);
+                    result.add(urlCheck);
+                }
+                return result;
+            }
+        }
+    }
+
     public static Map<String, Object> getUrlCheck(HikariDataSource dataSource, int urlId) throws SQLException {
         var result = new HashMap<String, Object>();
         var sql = "SELECT * FROM url_checks WHERE url_id = ?";
