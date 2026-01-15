@@ -10,7 +10,6 @@ import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.UrlStringUtils;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-import io.javalin.http.NotFoundResponse;
 
 import java.net.MalformedURLException;
 import java.net.URI;
