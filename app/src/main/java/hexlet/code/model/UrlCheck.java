@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter @Setter
@@ -18,11 +17,11 @@ public class UrlCheck {
     String h1 = "";
     StringBuilder description = new StringBuilder();
     int urlId;
-    Timestamp createdAt;
+    LocalDateTime createdAt;
 
     public UrlCheck(int urlId, int statusCode) {
         this.urlId = urlId;
-        this.createdAt = Timestamp.valueOf(LocalDateTime.now());
+        this.createdAt = LocalDateTime.now();
         this.statusCode = statusCode;
     }
 

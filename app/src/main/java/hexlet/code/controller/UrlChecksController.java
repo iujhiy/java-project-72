@@ -1,10 +1,9 @@
 package hexlet.code.controller;
 
-import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
-import hexlet.code.util.UrlChecker;
+import hexlet.code.service.UrlChecker;
 import io.javalin.http.Context;
 
 import java.sql.SQLException;
@@ -24,20 +23,13 @@ public final class UrlChecksController {
             ctx.redirect(NamedRoutes.urlsPath());
             return;
         }
-        var urlCheck = new UrlCheck(urlId);
+        var url = urlOptional.get().getName();
+        var urlCheck = UrlChecker.startSEOAnalysis(url);
+        var statusCode = UrlChecker.getStatusCode(url);
+        urlCheck.setUrlId(urlId);
+        urlCheck.setStatusCode(statusCode);
         try {
-            var url = urlOptional.get().getName();
-            var statusCode = UrlChecker.getStatusCode(url);
-            var seoAnalysisMap = UrlChecker.startSEOAnalysis(url);
-            urlCheck.setStatusCode(statusCode);
             UrlCheckRepository.save(urlCheck);
-            for (var set: seoAnalysisMap.entrySet()) {
-                var value = set.getValue();
-                var columnName = set.getKey();
-                if (value != null && !value.isEmpty()) {
-                    UrlCheckRepository.saveString(columnName, value, urlCheck.getId());
-                }
-            }
             ctx.sessionAttribute(FLASH_NAME, "Страница успешно проверена");
         } catch (Exception e) {
             UrlCheckRepository.save(urlCheck);

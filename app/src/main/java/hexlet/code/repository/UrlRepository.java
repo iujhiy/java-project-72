@@ -17,10 +17,11 @@ public class UrlRepository extends BaseRepository {
         String sql = "INSERT INTO urls(name, created_at) VALUES(?, ?)";
         try (var conn = dataSource.getConnection();
             var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            var currentDateTimeNow = Timestamp.valueOf(LocalDateTime.now());
+            var currentDateTimeNow = LocalDateTime.now();
+            var timestampDateTimeNow = Timestamp.valueOf(currentDateTimeNow);
             url.setCreatedAt(currentDateTimeNow);
             preparedStatement.setString(1, url.getName());
-            preparedStatement.setTimestamp(2, currentDateTimeNow);
+            preparedStatement.setTimestamp(2, timestampDateTimeNow);
             preparedStatement.executeUpdate();
             var generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -64,7 +65,8 @@ public class UrlRepository extends BaseRepository {
         var url = new Url();
         url.setId(resultSet.getInt("id"));
         url.setName(resultSet.getString("name"));
-        url.setCreatedAt(resultSet.getTimestamp("created_at"));
+        var dateTimeTimestamp = resultSet.getTimestamp("created_at");
+        url.setCreatedAt(dateTimeTimestamp.toLocalDateTime());
         return url;
     }
 

@@ -1,11 +1,9 @@
-package hexlet.code.util;
+package hexlet.code.service;
 
+import hexlet.code.model.UrlCheck;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
 import org.jsoup.Jsoup;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UrlChecker {
 
@@ -22,10 +20,10 @@ public class UrlChecker {
         }
     }
 
-    public static Map<String, String> startSEOAnalysis(String url) {
-        var resultMap = new HashMap<String, String>();
+    public static UrlCheck startSEOAnalysis(String url) {
+        var result = new UrlCheck();
         String h1 = "";
-        String description = "";
+        var description = new StringBuilder();
         var response = getResponse(url).getBody();
         var html = Jsoup.parse(response);
         var title = html.title();
@@ -35,11 +33,12 @@ public class UrlChecker {
         }
         var descriptionElement = html.selectFirst("meta[name=description]");
         if (descriptionElement != null) {
-            description = descriptionElement.attr("content");
+            var content = descriptionElement.attr("content");
+            description.append(content);
         }
-        resultMap.put("title", title);
-        resultMap.put("h1", h1);
-        resultMap.put("description", description);
-        return resultMap;
+        result.setTitle(title);
+        result.setH1(h1);
+        result.setDescription(description);
+        return result;
     }
 }

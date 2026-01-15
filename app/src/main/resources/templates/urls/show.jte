@@ -40,8 +40,8 @@
                         </tr>
                         <tr>
                             <td>Дата создания</td>
-                            <td>${UrlStringUtils.getCreatedAtAsString(urlPage.getUrl().getCreatedAt())}
-                            </td>
+                            <td> ${UrlStringUtils.getCreatedAtAsString(urlPage.getUrl().getCreatedAt())}
+                           </td>
                         </tr>
                         </tbody>
                     </table>

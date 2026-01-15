@@ -1,13 +1,11 @@
 package hexlet.code.util;
 
-import hexlet.code.model.UrlCheck;
-
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public final class UrlStringUtils {
     private UrlStringUtils() {
@@ -27,39 +25,14 @@ public final class UrlStringUtils {
         return clearUrl.toString().trim().toLowerCase();
     }
 
-    public static String getCreatedAtAsString(Timestamp createdAt) {
+    public static String getCreatedAtAsString(LocalDateTime createdAt) {
         if (createdAt == null) {
             return "";
         }
-        return new SimpleDateFormat("dd.MM.yyyy HH:mm").format(createdAt);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        return createdAt.format(formatter);
     }
 
-    public static UrlCheck createUrlCheck(ResultSet resultSet) throws SQLException {
-        var urlCheck = new UrlCheck();
-        urlCheck.setId(resultSet.getInt("id"));
-        urlCheck.setUrlId(resultSet.getInt("url_id"));
-        urlCheck.setCreatedAt(resultSet.getTimestamp("created_at"));
-        urlCheck.setStatusCode(resultSet.getInt("status_code"));
-        if (hasColumn(resultSet, "description")) {
-            String description = resultSet.getString("description");
-            if (description != null) {
-                urlCheck.setDescription(new StringBuilder(description));
-            }
-        }
-        if (hasColumn(resultSet, "h1")) {
-            String h1 = resultSet.getString("h1");
-            if (h1 != null) {
-                urlCheck.setH1(h1);
-            }
-        }
-        if (hasColumn(resultSet, "title")) {
-            String title = resultSet.getString("title");
-            if (title != null) {
-                urlCheck.setTitle(title);
-            }
-        }
-        return urlCheck;
-    }
 
     public static boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
         ResultSetMetaData metaData = rs.getMetaData();

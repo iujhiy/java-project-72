@@ -9,6 +9,7 @@ import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import hexlet.code.util.UrlStringUtils;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 
 import java.net.MalformedURLException;
@@ -29,31 +30,38 @@ public final class UrlsController {
 
     public static void create(Context ctx) throws SQLException {
         var urlString = ctx.formParam("url");
-        try {
-            if (urlString == null || urlString.trim().isEmpty()) {
-                throw new IllegalArgumentException("URL не может быть пустым");
-            }
-            URI uri = new URI(urlString);
-            URL url = uri.toURL();
-            String clearUrl = UrlStringUtils.makeClearURL(url);
-            var result = new Url(clearUrl);
-            if (!UrlRepository.isAlreadyExists(result)) {
-                UrlRepository.save(result);
-                ctx.sessionAttribute(FLASH_NAME, "Страница успешно добавлена");
-                ctx.redirect(NamedRoutes.urlsPath());
-                return;
-            } else {
-                ctx.sessionAttribute(FLASH_NAME, "Страница уже существует");
-                ctx.status(409);
-            }
-        } catch (URISyntaxException | MalformedURLException e) {
-            ctx.sessionAttribute(FLASH_NAME, "Некорректный URL");
-            ctx.status(400);
-        } catch (IllegalArgumentException e) {
-            ctx.sessionAttribute(FLASH_NAME, e.getMessage());
-            ctx.status(400);
+        if (urlString == null || urlString.trim().isEmpty()) {
+            saveFlashAndStatus(ctx, "URL не может быть пустым",
+                    HttpStatus.BAD_REQUEST.getCode());
+            index(ctx);
+            return;
         }
-        index(ctx); // отрисовываем старницу /urls без сохранения в БД и с определенным статусом
+        URL url;
+        try {
+            URI uri = new URI(urlString);
+            url = uri.toURL();
+        } catch (URISyntaxException | MalformedURLException e) {
+            saveFlashAndStatus(ctx, "Некорректный URL",
+                    HttpStatus.BAD_REQUEST.getCode());
+            index(ctx);
+            return;
+        }
+        String clearUrl = UrlStringUtils.makeClearURL(url);
+        var result = new Url(clearUrl);
+        if (!UrlRepository.isAlreadyExists(result)) {
+            UrlRepository.save(result);
+            ctx.sessionAttribute(FLASH_NAME, "Страница успешно добавлена");
+            ctx.redirect(NamedRoutes.urlsPath());
+        } else {
+            saveFlashAndStatus(ctx, "Страница уже существует",
+                    HttpStatus.CONFLICT.getCode());
+            index(ctx); // отрисовываем страницу /urls без сохранения в БД и с определенным статусом
+        }
+    }
+
+    public static void saveFlashAndStatus(Context ctx, String flash, int status) {
+        ctx.sessionAttribute(FLASH_NAME, flash);
+        ctx.status(status);
     }
 
     public static void index(Context ctx) throws SQLException {

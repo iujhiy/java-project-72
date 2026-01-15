@@ -1,7 +1,7 @@
 package hexlet.code.repository;
 
 import hexlet.code.BaseTestClass;
-import hexlet.code.model.Url;
+import hexlet.code.TestUtils;
 import hexlet.code.model.UrlCheck;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,21 +14,20 @@ public class UrlsCheckRepositoryTest extends BaseTestClass {
 
     @BeforeEach
     public final void makeUrl() throws SQLException {
-        var url = new Url("https://example.com");
-        UrlRepository.save(url);
+        String url = "https://example.com";
+        TestUtils.saveUrl(dataSource, url);
     }
 
     @Test
     public void testUrlCheckSave() throws SQLException {
         final var urlId = 1;
         var statusCode = 200;
-        var urlCheck1 = new UrlCheck(urlId, statusCode);
-        UrlCheckRepository.save(urlCheck1);
+        TestUtils.saveUrlCheck(dataSource, urlId, statusCode);
         statusCode = 404;
-        var urlCheck2 = new UrlCheck(urlId, statusCode);
-        UrlCheckRepository.save(urlCheck2);
+        TestUtils.saveUrlCheck(dataSource, urlId, statusCode);
         var urlChecksFromDB = UrlCheckRepository.getEntitiesById(urlId);
-        assertThat(urlChecksFromDB.size()).isEqualTo(2);
+        final var entityCount = 2;
+        assertThat(urlChecksFromDB.size()).isEqualTo(entityCount);
         assertThat(urlChecksFromDB.get(0).getUrlId()).isEqualTo(urlId);
         assertThat(urlChecksFromDB.get(0).getStatusCode()).isEqualTo(404);
         assertThat(urlChecksFromDB.get(1).getStatusCode()).isEqualTo(200);
@@ -39,11 +38,11 @@ public class UrlsCheckRepositoryTest extends BaseTestClass {
         final var urlId = 1;
         var statusCode = 200;
         var urlCheck1 = new UrlCheck(urlId, statusCode);
+        TestUtils.saveUrlCheck(dataSource, urlId, statusCode);
         statusCode = 404;
         var urlCheck2 = new UrlCheck(urlId, statusCode);
-        UrlCheckRepository.save(urlCheck1);
-        UrlCheckRepository.save(urlCheck2);
-        var lastChecks = UrlCheckRepository.getLastChecks();
+        TestUtils.saveUrlCheck(dataSource, urlId, statusCode);
+        var lastChecks = TestUtils.getLastChecks(dataSource);
         assertThat(lastChecks.getFirst().getStatusCode())
                 .isEqualTo(urlCheck2.getStatusCode());
         assertThat(lastChecks).doesNotContain(urlCheck1);

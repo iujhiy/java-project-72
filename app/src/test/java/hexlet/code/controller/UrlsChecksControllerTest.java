@@ -1,55 +1,81 @@
 package hexlet.code.controller;
 
 import hexlet.code.BaseTestClass;
+import hexlet.code.TestUtils;
 import hexlet.code.util.NamedRoutes;
+import io.javalin.http.HttpStatus;
 import io.javalin.testtools.JavalinTest;
-import mockwebserver3.MockResponse;
-import mockwebserver3.MockWebServer;
+import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UrlsChecksControllerTest extends BaseTestClass {
     private static MockWebServer mockServer;
     private static String mockServerUrl;
+    private static final String HTML_BODY = """
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="description" content="it's description content">
+                <title>It's title</title>
+            </head>
+            <body>
+                <div>
+                    <h1>It's h1</h1>
+                </div>
+            </body>
+            </html>
+            """;
 
     @BeforeAll
     public static void setUpAll() throws IOException {
         mockServer = new MockWebServer();
+        MockResponse mockResponse = new MockResponse().setBody(HTML_BODY);
+        mockServer.enqueue(mockResponse);
         mockServer.start();
         mockServerUrl = mockServer.url("/").toString();
     }
 
     @AfterAll
-    public static void clearAll() {
+    public static void clearAll() throws IOException {
         if (mockServer != null) {
-            mockServer.close();
+            mockServer.shutdown();
         }
     }
+
+
 
     @Test
     public void testCreateUrlWithMockServer() {
         JavalinTest.test(app, (server, client) -> {
-            mockServer.enqueue(new MockResponse.Builder()
-                    .code(200)
-                    .build());
-            mockServer.enqueue(new MockResponse.Builder()
-                    .code(200)
-                    .build());
             var testUrl = mockServerUrl.endsWith("/")
                     ? mockServerUrl.substring(0, mockServerUrl.length() - 1)
                     : mockServerUrl;
-            client.post(NamedRoutes.urlsPath(), "url=" + testUrl);
-            client.post(NamedRoutes.urlChecksPath(1));
-            var response = client.get(NamedRoutes.urlPath(1));
-            assertThat(response.code()).isEqualTo(200);
-            assertThat(response.body().string())
-                    .contains(testUrl)
-                    .contains("200");
+            assertThat(client.post(NamedRoutes.urlsPath(), "url=" + testUrl).code())
+                    .isEqualTo(HttpStatus.OK.getCode());
+
+            var urlMap = TestUtils.getUrlByName(dataSource, testUrl);
+            assertThat(urlMap).isNotNull();
+            assertThat(urlMap.get("name")).isEqualTo(testUrl);
+            assertThat(urlMap.get("id")).isNotNull();
+            int urlId = (int) urlMap.get("id");
+
+            assertThat(client.post(NamedRoutes.urlChecksPath(urlId)).code())
+                    .isEqualTo(HttpStatus.OK.getCode());
+            var actualUrlCheck = TestUtils.getUrlCheck(dataSource, urlId);
+            assertThat(actualUrlCheck).isNotNull();
+            assertThat(actualUrlCheck.get("h1")).isEqualTo("It's h1");
+            assertThat(actualUrlCheck.get("description")).isEqualTo("it's description content");
+            assertThat(actualUrlCheck.get("title")).isEqualTo("It's title");
         });
     }
 }
