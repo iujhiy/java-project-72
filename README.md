@@ -12,3 +12,41 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=iujhiy_java-project-72&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=iujhiy_java-project-72)
 
 ### Demo application: https://java-project-72-nx64.onrender.com
+
+This project is designed for simplified SEO analysis of websites. The implementation follows the principles of REST API. The frontend is designed using Bootstrap v5, and the backend supports a PostgreSQL database.
+
+## Start
+
+```bash
+make
+```
+
+## Setup
+
+```bash
+make build
+```
+
+## Run
+
+```bash
+make run
+```
+
+## Run tests
+
+```bash
+make test
+```
+
+## Run checkstyle
+
+```bash
+make lint
+```
+
+## Check update dependencies and plugins
+
+```bash
+make update
+```
