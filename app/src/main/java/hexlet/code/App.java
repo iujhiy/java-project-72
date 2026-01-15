@@ -14,6 +14,7 @@ import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -29,6 +30,8 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 @Slf4j
 public class App {
     private static final String DEFAULT_DATABASE_URL = "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;MODE=PostgreSQL";
+    @Getter
+    private static HikariDataSource dataSource;
 
     private static String readRecourseFile(String filename) throws IOException {
         var inputStream = App.class.getClassLoader().getResourceAsStream(filename);
@@ -61,7 +64,7 @@ public class App {
                 ? DEFAULT_DATABASE_URL // запускаем h2 базу
                 : System.getenv("JDBC_DATABASE_URL");
         hikariConfig.setJdbcUrl(url);
-        var dataSource = new HikariDataSource(hikariConfig);
+        dataSource = new HikariDataSource(hikariConfig);
         var sql = readRecourseFile("schema.sql"); // схема базы данных
         log.info(sql);
         try (var connection = dataSource.getConnection();

@@ -1,24 +1,30 @@
 package hexlet.code.controller;
 
-import hexlet.code.BaseTestClass;
+import com.zaxxer.hikari.HikariDataSource;
+import hexlet.code.App;
 import hexlet.code.TestUtils;
 import hexlet.code.util.NamedRoutes;
+import io.javalin.Javalin;
 import io.javalin.http.HttpStatus;
 import io.javalin.testtools.JavalinTest;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.MockResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UrlsChecksControllerTest extends BaseTestClass {
+public class UrlsChecksControllerTest {
     private static MockWebServer mockServer;
     private static String mockServerUrl;
+    private Javalin app;
+    public static HikariDataSource dataSource;
     private static final String HTML_BODY = """
             <!DOCTYPE html>
             <html lang="en">
@@ -52,7 +58,11 @@ public class UrlsChecksControllerTest extends BaseTestClass {
         }
     }
 
-
+    @BeforeEach
+    public void setUp() throws SQLException, IOException {
+        app = App.getApp();
+        dataSource = App.getDataSource();
+    }
 
     @Test
     public void testCreateUrlWithMockServer() {
