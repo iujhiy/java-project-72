@@ -1,11 +1,16 @@
 package hexlet.code.service;
 
 import hexlet.code.model.UrlCheck;
+import hexlet.code.util.AssertionErrorPrivateConstructor;
 import kong.unirest.core.HttpResponse;
 import kong.unirest.core.Unirest;
 import org.jsoup.Jsoup;
 
-public class UrlChecker {
+public final class UrlChecker {
+
+    private UrlChecker() {
+        AssertionErrorPrivateConstructor.throwAssertionError("service");
+    }
 
     private static HttpResponse<String> getResponse(String url) {
         return Unirest.get(url).requestTimeout(5000).asString();

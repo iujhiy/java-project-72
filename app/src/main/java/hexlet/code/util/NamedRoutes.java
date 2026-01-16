@@ -3,19 +3,25 @@ package hexlet.code.util;
 public final class NamedRoutes {
 
     private NamedRoutes() {
-        throw new AssertionError("Cannot instantiate utility class");
+        AssertionErrorPrivateConstructor.throwAssertionError("util");
     }
 
+    private static final String URLS_PATH = "urls";
+    private static final String CHECKS_PATH = "checks";
+    private static final String INDEX_NAME = "index.jte";
+    private static final String SHOW_NAME = "show.jte";
+
+
     public static String urlsPath() {
-        return "/urls";
+        return "/" + URLS_PATH;
     }
 
     public static String urlsTemplate() {
-        return "urls/index.jte";
+        return URLS_PATH + "/" + INDEX_NAME;
     }
 
     public static String urlTemplate() {
-        return "urls/show.jte";
+        return URLS_PATH + "/" + SHOW_NAME;
     }
 
     public static String urlPath(int id) {
@@ -23,7 +29,7 @@ public final class NamedRoutes {
     }
 
     public static String urlPath(String id) {
-        return "/urls/" + id;
+        return "/" + URLS_PATH + "/" + id;
     }
 
     public static String urlChecksPath(int urlId) {
@@ -31,6 +37,6 @@ public final class NamedRoutes {
     }
 
     public static String urlChecksPath(String urlId) {
-        return "/urls/" + urlId + "/checks";
+        return "/" + URLS_PATH + "/" + urlId + "/" + CHECKS_PATH;
     }
 }

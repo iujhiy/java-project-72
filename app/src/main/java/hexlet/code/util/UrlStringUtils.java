@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class UrlStringUtils {
     private UrlStringUtils() {
-        throw new AssertionError("This is utility class");
+        AssertionErrorPrivateConstructor.throwAssertionError("util");
     }
 
     public static final String FLASH_NAME = "flash";

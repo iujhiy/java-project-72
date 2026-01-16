@@ -80,20 +80,6 @@ public class UrlCheckRepository extends BaseRepository {
         }
     }
 
-//    public static void saveString(String columnName, String value, int id)
-//            throws SQLException, IllegalAccessException {
-//        Set<String> allowedColumns = Set.of("h1", "title", "description");
-//        if (!allowedColumns.contains(columnName)) {
-//            throw new IllegalAccessException("Недопустимое значение столбца");
-//        }
-//        var sql = "UPDATE url_checks SET " + columnName + " = ? WHERE id = ?";
-//        try (var conn = dataSource.getConnection();
-//             var preparedStatement = conn.prepareStatement(sql)) {
-//            preparedStatement.setString(1, value);
-//            preparedStatement.setInt(2, id);
-//            preparedStatement.executeUpdate();
-//        }
-//    }
 
     public static UrlCheck createUrlCheck(ResultSet resultSet) throws SQLException {
         var urlCheck = new UrlCheck();
